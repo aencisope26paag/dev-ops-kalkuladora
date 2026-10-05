@@ -12,8 +12,8 @@ jobs:
     stategy:
       matrix:
         java: [ '17', '25' ]
-    steps:
 
+    steps:
     - name: Descargar el código del repositorio
       uses: actions/checkout@v5
 
