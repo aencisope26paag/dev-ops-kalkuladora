@@ -20,4 +20,4 @@ jobs:
         distribution: 'temurin'
     
     - name: Compilar y ejecutar tests de la Calculadora
-      run: mvn clean tests
+      run: mvn clean test

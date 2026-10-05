@@ -3,7 +3,6 @@ package com.example;
 public class Kalkulagailua {
 
     public int batu(int a, int b) {
-        // Nahita balio oker bat itzuliko dugu testak huts egin dezan
         return a+b;
     }
 
