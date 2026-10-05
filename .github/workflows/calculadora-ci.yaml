@@ -9,21 +9,25 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    stategy:
+      matrix:
+        java: [ '17', '25' ]
     steps:
+
     - name: Descargar el código del repositorio
       uses: actions/checkout@v5
 
-    - name: Configurar el JDK 25
+    - name: Configurar el JDK ${{ matrix.java }}
       uses: actions/setup-java@v5
       with:
-        java-version: '25'
+        java-version: ${{ matrix.java }}
         distribution: 'temurin'
     
     - name: Compilar y ejecutar tests de la Calculadora
       run: mvn clean package
 
     - name: Guardar la Calculadora compilada
-      uses: actions/upload-artifact@v5
+      uses: actions/upload-artifact@v4
       with:
         name: calculadora-app
         path: target/*.jar
