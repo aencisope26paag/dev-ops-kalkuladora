@@ -24,7 +24,7 @@ jobs:
         distribution: 'temurin'
     
     - name: Compilar y ejecutar tests de la Calculadora
-      run: mvn clean package
+      run: mvn clean test
 
     - name: Guardar la Calculadora compilada
       uses: actions/upload-artifact@v4
