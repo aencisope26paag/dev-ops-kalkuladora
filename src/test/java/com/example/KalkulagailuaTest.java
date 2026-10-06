@@ -14,7 +14,7 @@ class KalkulagailuaTest {
         int emaitza = kalk.batu(2, 3);
 
         // 3. Egiaztapena (Assert)
-        assertEquals(1 /* << Fallo intencionado (5) */, emaitza, "2 + 3 batuketak 5 izan beharko luke");
+        assertEquals(5, emaitza, "2 + 3 batuketak 5 izan beharko luke");
 
         // kenketa
         assertEquals(6, kalk.kendu(10, 4));
