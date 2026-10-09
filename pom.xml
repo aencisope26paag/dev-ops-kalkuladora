@@ -74,8 +74,6 @@
           <artifactId>maven-project-info-reports-plugin</artifactId>
           <version>3.0.0</version>
         </plugin>
-        // 3. ariketa plugins
-          // checkstyle
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>  
           <artifactId>maven-checkstyle-plugin</artifactId>
@@ -85,7 +83,6 @@
             <consoleOutput>true</consoleOutput>
           </configuration>
         </plugin>
-          // jacoco
         <plugin>
           <groupId>org.jacoco</groupId>
           <artifactId>jacoco-maven-plugin</artifactId>
