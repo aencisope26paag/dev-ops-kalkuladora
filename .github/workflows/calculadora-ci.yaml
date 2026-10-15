@@ -1,31 +1,70 @@
-name: Calculadora de CI con Maven
+name: Pipeline CI Avanzado
 
 on:
   pull_request:
     branches: [ "main" ]
 
 jobs:
-  build:
+  code_quality:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        java: [ '17', '25' ]
-
     steps:
-    - name: Descargar el código del repositorio
-      uses: actions/checkout@v5
+      - name: Checkout del código
+        uses: actions/checkout@v4
 
-    - name: Configurar el JDK ${{ matrix.java }}
-      uses: actions/setup-java@v5
-      with:
-        java-version: ${{ matrix.java }}
-        distribution: 'temurin'
-    
-    - name: Compilar y ejecutar tests de la Calculadora
-      run: mvn clean package
+      - name: Configurar Java 17 y Caché
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'maven'
 
-    - name: Guardar la Calculadora compilada
-      uses: actions/upload-artifact@v4
-      with:
-        name: calculadora-app
-        path: target/*.jar
+      - name: Ejecutar Checkstyle
+        run: mvn checkstyle:check
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      - name: Configurar Java 17 y Caché
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Ejecutar Tests Unitarios (Genera reporte JaCoCo)
+        run: mvn test
+
+      - name: Subir Reporte de Cobertura a GitHub
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: reporte-cobertura-jacoco
+          path: target/site/jacoco/
+          retention-days: 7
+
+  package:
+    needs: [code_quality, test]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      - name: Configurar Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Construir el JAR (saltando tests porque ya pasaron)
+        run: mvn package -DskipTests
+
+      - name: Subir Artefacto JAR
+        uses: actions/upload-artifact@v4
+        with: 
+          name: calculadora-app
+          path: target/*.jar
+          retention-days: 7
